@@ -13,7 +13,7 @@ RUN mkdir -p /srv/debile/incoming/UploadQueue \
 RUN chown -R Debian-debile:Debian-debile /srv/debile/
 RUN chmod 0773 /srv/debile/incoming/UploadQueue
 COPY setup.sh /opt/setup.sh
+COPY run.sh /opt/run.sh
 USER Debian-debile
-RUN /opt/setup.sh
 USER root
-ENTRYPOINT /usr/bin/debile-master
+ENTRYPOINT /opt/run.sh
