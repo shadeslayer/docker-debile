@@ -18,4 +18,5 @@ EOF
 
   ln -s ~/.gnupg/pubring.gpg /srv/debile/keyring.pgp
   cat /srv/debile/master.crt | tee -a /srv/debile/keyring.pem
+  touch $FILE
 fi
