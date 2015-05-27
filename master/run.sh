@@ -3,4 +3,4 @@ set -x
 set -e
 
 /opt/setup.sh
-/usr/bin/debile-master
+/usr/bin/debile-slave
