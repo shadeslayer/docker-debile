@@ -4,6 +4,8 @@ set -e
 DEBILE_DIR='/srv/debile'
 FILE="$DEBILE_DIR/setup.done"
 
+export GNUPGHOME=$DEBILE_DIR
+
 if [ ! -f $FILE ];
 then
   openssl req -utf8 -nodes -newkey rsa:4096 -sha256 -x509 -days 7300 -subj "/C=NT/O=Debian/CN=debile.debian.net" -keyout $DEBILE_DIR/master.key -out $DEBILE_DIR/master.crt
@@ -16,7 +18,7 @@ then
     Name-Email: debile@localhost
 EOF
 
-  ln -s ~/.gnupg/pubring.gpg $DEBILE_DIR/keyring.pgp
+  gpg --fingerprint debile@localhost
   cat $DEBILE_DIR/master.crt | tee -a $DEBILE_DIR/keyring.pem
 
   mkdir -p $DEBILE_DIR/incoming/UploadQueue \
