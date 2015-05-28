@@ -7,13 +7,8 @@ RUN /usr/lib/pbuilder/pbuilder-satisfydepends
 RUN dpkg-buildpackage
 WORKDIR /tmp
 RUN dpkg --force-depends -i *.deb && apt-get -fy install
-RUN mkdir -p /srv/debile/incoming/UploadQueue \
-             /srv/debile/files/default \
-             /srv/debile/repo/default
-RUN chown -R Debian-debile:Debian-debile /srv/debile/
-RUN chmod 0773 /srv/debile/incoming/UploadQueue
-COPY setup.sh /opt/setup.sh
-COPY run.sh /opt/run.sh
-USER Debian-debile
-USER root
-ENTRYPOINT /opt/run.sh
+COPY setup.sh /opt/debile/
+COPY run.sh /opt/debile/
+COPY config.yaml /opt/debile/
+EXPOSE 22017
+ENTRYPOINT /opt/debile/run.sh

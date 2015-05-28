@@ -2,5 +2,5 @@
 set -x
 set -e
 
-/opt/setup.sh
-/usr/bin/debile-master
+/opt/debile/setup.sh
+/usr/bin/debile-master --auth simple --config /srv/debile/config.yaml

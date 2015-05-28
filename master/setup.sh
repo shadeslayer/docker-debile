@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -x
 set -e
-
-FILE="/srv/debile/setup.done"
+DEBILE_DIR='/srv/debile'
+FILE="$DEBILE_DIR/setup.done"
 
 if [ ! -f $FILE ];
 then
-  openssl req -utf8 -nodes -newkey rsa:4096 -sha256 -x509 -days 7300 -subj "/C=NT/O=Debian/CN=debile.debian.net" -keyout /srv/debile/master.key -out /srv/debile/master.crt
-  chmod go-rwx /srv/debile/*.key
+  openssl req -utf8 -nodes -newkey rsa:4096 -sha256 -x509 -days 7300 -subj "/C=NT/O=Debian/CN=debile.debian.net" -keyout $DEBILE_DIR/master.key -out $DEBILE_DIR/master.crt
+  chmod go-rwx $DEBILE_DIR/*.key
   gpg -q --gen-key --batch <<EOF
     Key-Type: RSA
     Key-Length: 2048
@@ -16,7 +16,13 @@ then
     Name-Email: debile@localhost
 EOF
 
-  ln -s ~/.gnupg/pubring.gpg /srv/debile/keyring.pgp
-  cat /srv/debile/master.crt | tee -a /srv/debile/keyring.pem
+  ln -s ~/.gnupg/pubring.gpg $DEBILE_DIR/keyring.pgp
+  cat $DEBILE_DIR/master.crt | tee -a $DEBILE_DIR/keyring.pem
+
+  mkdir -p $DEBILE_DIR/incoming/UploadQueue \
+              $DEBILE_DIR/files/default \
+              $DEBILE_DIR/repo/default
+
+  cp /opt/debile/config.yaml /srv/debile/
   touch $FILE
 fi
